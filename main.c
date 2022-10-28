@@ -6,7 +6,7 @@
 /*   By: tvillare <tvillare@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/15 14:43:56 by tvillare          #+#    #+#             */
-/*   Updated: 2022/10/28 10:46:32 by tvillare         ###   ########.fr       */
+/*   Updated: 2022/10/28 11:09:34 by tvillare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ int main()
 	i = 0;
 	file = open("mifichero.txt", O_RDONLY);
 	file2 = open("minifichero.txt", O_RDONLY);
-	file3 = open("nl.txt", O_RDONLY);
+	file3 = open("void.txt", O_RDONLY);
 	//a = get_next_line(file2);
 	//printf("%s", a);
 /*
@@ -57,7 +57,7 @@ int main()
 
 	while (15 > i)
 	{
-		a = get_next_line(file);
+		a = get_next_line(file2);
 		//printf("\n%d\n", i);
 		printf("%d -> -%s-\n", i, a);
 		free(a);

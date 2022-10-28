@@ -6,7 +6,7 @@
 /*   By: tvillare <tvillare@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/18 10:38:43 by tvillare          #+#    #+#             */
-/*   Updated: 2022/10/27 18:06:45 by tvillare         ###   ########.fr       */
+/*   Updated: 2022/10/28 13:16:14 by tvillare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@
 char	*get_next_line(int fd);
 size_t	ft_strlen(const char *s);
 char	*ft_strjoin(char const *s1, char const *s2);
-char	*ft_strdup(const char *s1, int equal);
+char	*ft_strdup(char *s1, int equal);
 void	*ft_calloc(size_t count, size_t size);
 char	*ft_union(char *ptn, char *tmp);
 size_t	ft_strlcpy(char *dst, const char *src, size_t dstsize);

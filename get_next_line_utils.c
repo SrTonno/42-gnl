@@ -6,7 +6,7 @@
 /*   By: tvillare <tvillare@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/19 12:21:59 by tvillare          #+#    #+#             */
-/*   Updated: 2022/10/28 10:33:06 by tvillare         ###   ########.fr       */
+/*   Updated: 2022/10/28 15:06:22 by tvillare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,18 +66,27 @@ char	*ft_strjoin(char const *s1, char const *s2)
 	return (pnt);
 }
 
-char	*ft_strdup(const char *s1, int equal)
+char	*ft_strdup(char *s1, int equal)
 {
 	int		i;
 	char	*s2;
 
 	i = 0;
-	//if (equal == -1)
-		//equal = ft_strlen(s1);
-	s2 = ft_calloc(sizeof(char), (equal + 1));
+	equal = 0;
+
+	if (!s1[equal])
+		return (NULL);
+
+	while (s1[equal] && s1[equal] != '\n')
+		equal++;
+
+	s2 = NULL;
+	if (s1[equal] == '\n')
+		equal++;
+	s2 = ft_calloc(sizeof(char), (equal + 2));
 	if (NULL == s2)
 		return (NULL);
-	while (equal > i)
+	while (s1[i] && s1[i] != '\n')
 	{
 		s2[i] = s1[i];
 		i++;
