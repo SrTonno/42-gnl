@@ -6,7 +6,7 @@
 /*   By: tvillare <tvillare@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/18 10:37:21 by tvillare          #+#    #+#             */
-/*   Updated: 2022/10/24 17:45:13 by tvillare         ###   ########.fr       */
+/*   Updated: 2022/10/28 10:43:13 by tvillare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,17 +19,36 @@
 #include <stdio.h>
 */
 
+void	*update_buffer(char *buffer, int equal)
+{
+	int		i;
+	char	*aux;
+
+	i = 0;
+	equal = equal + 1;
+	aux = ft_calloc((ft_strlen(buffer) - equal), sizeof(char));
+	while (buffer[equal + i] != '\0')
+	{
+		aux[i] = buffer[equal + i];
+		i++;
+	}
+	aux[i] = '\0';
+	free(buffer);
+	return (aux);
+}
 
 char	*ft_union(char *ptn, char *tmp)
 {
-	ptn = ft_strjoin(ptn, tmp);
-	if(!ptn)
+	char	*aux;
+
+	aux = ft_strjoin(ptn, tmp);
+	if(!aux)
 		return (NULL);
-	free (tmp);
-	return (ptn);
+	free(ptn);
+	return (aux);
 }
 
-int hunt_nl(char *tmp)
+int	hunt_nl(char *tmp)
 {
 	int i;
 
@@ -42,48 +61,77 @@ int hunt_nl(char *tmp)
 	}
 	return (-1);
 }
-char	*get_next_line(int fd)
-{
-	static char	*buffer;
-	char		*tmp;
-	char		*ptn;
-	int			numbytes;
-	int			equal;
 
-	numbytes = 1;
-	ptn = ft_calloc(1, 1);
-	if (!ptn)
-		return(NULL);
-	while (numbytes > 0)
+char	*ft_reader(char *input, int fd)
+{
+	char	*tmp;
+	int		numbytes;
+
+	if (input == NULL)
 	{
-		numbytes = read(fd, &buffer, BUFFER_SIZE);
-		//printf("(%d)", numbytes);
+		input = ft_calloc(1, sizeof(char));
+		if (input == NULL)
+			return (NULL);
+	}
+	numbytes = 1;
+	tmp = ft_calloc((BUFFER_SIZE + 1), sizeof(char));
+	if (tmp == NULL)
+			return (NULL);
+	while (0 < numbytes)
+	{
+		numbytes = read(fd, tmp, BUFFER_SIZE);
 		if (numbytes == -1)
 		{
-			//printf("%d - null-", numbytes);
+			free(tmp);
 			return (NULL);
 		}
-		equal = hunt_nl((char *)&buffer);
-		tmp = ft_strdup((char *)&buffer, equal);
-		if (!tmp)
-		{
-			free(ptn);
+		tmp[numbytes] = '\0';
+		input = ft_union(input, tmp);
+		if (!input)
 			return(NULL);
-		}
-		//printf("%s", tmp);
-		ptn = ft_union(ptn, tmp);
-		if (!ptn)
-		{
-			free(ptn);
-			return(NULL);
-		}
-		if (equal != -1)
-		{
-			ft_strlcpy((char *)buffer, (char *)buffer + equal, (BUFFER_SIZE - equal));
-			//buffer = &buffer[equal];
-			//buffer[equal] = 0;
+		if (hunt_nl(tmp) > -1)
 			break;
-		}
 	}
-	return(ptn);
+	free(tmp);
+	return (input);
+}
+/*
+char	*create_nl(char *input, int equal)
+{
+	char	*ptn;
+	//if (ft_strlen(input) == equal)
+		//return (input);
+	ptn = ft_strdup(input, equal);
+	if (!ptn)
+		return (NULL);
+	return (ptn);
+
+}
+*/
+char	*get_next_line(int fd)
+{
+	//static char	buffer[BUFFER_SIZE + 1];
+	static char	*buffer;
+	char		*tmp;
+	int 		equal;
+
+	//printf("inicio\n");
+	if (read(fd, 0, 0) < 0)
+	{
+		if(buffer != NULL)
+		{
+			free(buffer);
+			buffer = NULL;
+		}
+		return (NULL);
+	}
+	buffer = ft_reader(buffer, fd);
+	//printf("(%s)", buffer);
+	equal = hunt_nl(buffer);
+	//printf("%d\n", equal);
+	tmp = ft_strdup(buffer, equal);
+	buffer = update_buffer(buffer, equal);
+	//printf("[%s]", tmp);
+	//printf("fin\n");
+	return (tmp);
 }

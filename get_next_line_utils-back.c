@@ -6,7 +6,7 @@
 /*   By: tvillare <tvillare@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/19 12:21:59 by tvillare          #+#    #+#             */
-/*   Updated: 2022/10/28 10:33:06 by tvillare         ###   ########.fr       */
+/*   Updated: 2022/10/26 17:34:29 by tvillare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,51 +40,79 @@ void	*ft_calloc(size_t count, size_t size)
 	return (ptn);
 }
 
-
-char	*ft_strjoin(char const *s1, char const *s2)
+char	*ft_strjoin(char const *s1, char const *s2, int equal)
 {
 	int		x1;
 	int		x2;
 	int		i;
 	int		j;
-	char	*pnt;
+	char	*ptn;
 
 	if (s1 == NULL || s2 == NULL)
 		return (NULL);
 	x1 = ft_strlen((char *)s1);
-	x2 = ft_strlen((char *)s2);
+	if (equal == -1)
+		x2 = ft_strlen((char *)s2);
+	else
+		x2 = equal + 1;
 	i = -1;
 	j = 0;
-	pnt = ft_calloc(sizeof(char), (x1 + x2 + 1));
-	if (pnt == NULL)
+	ptn = ft_calloc(sizeof(char), (x1 + x2 + 1));
+	if (ptn == NULL)
 		return (NULL);
-	while (s1[++i] != '\0')
-		pnt[i] = (char)s1[i];
-	while (s2[j] != '\0')
-		pnt[i++] = (char)s2[j++];
-	pnt[i] = '\0';
-	return (pnt);
+	while (x1 > ++i)
+		ptn[i] = (char)s1[i];
+	while (x2 > j)
+		ptn[i++] = (char)s2[j++];
+	//if (equal != -1)
+		//ptn[i++] = 10;
+	ptn[i] = '\0';
+	free ((char *)s1);
+	return (ptn);
 }
 
 char	*ft_strdup(const char *s1, int equal)
 {
+	int		x;
 	int		i;
 	char	*s2;
 
+	equal = 1;
 	i = 0;
+	//equal = -1;
 	//if (equal == -1)
-		//equal = ft_strlen(s1);
-	s2 = ft_calloc(sizeof(char), (equal + 1));
+	x = ft_strlen(s1);
+	//else
+		//x = equal;
+	s2 = ft_calloc(sizeof(*s1), (x + 1));
 	if (NULL == s2)
 		return (NULL);
-	while (equal > i)
+	while (s1[i] != '\0')
 	{
 		s2[i] = s1[i];
 		i++;
 	}
-	if (s1[i] && s1[i] == '\n')
-		s2[i++] = '\n';
+	//if (equal != -1)
+		//s2[i] = 10;
 	s2[i] = '\0';
 	return (s2);
 }
 
+size_t	ft_strlcpy(char *dst, const char *src, size_t dstsize)
+{
+	size_t	i;
+	size_t	x;
+
+	i = 0;
+	x = ft_strlen((char *)src);
+	if (dstsize != 0)
+	{
+		while ((src[i] != '\0') && ((dstsize - 1) > i) && (dstsize != 0))
+		{
+			dst[i] = src[i];
+			i++;
+		}
+		dst[i] = '\0';
+	}
+	return (x);
+}

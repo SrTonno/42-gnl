@@ -1,4 +1,5 @@
-uno, dos, tres, cuatro, NEWLINE
+@uno, dos, tres, cuatro, NEWLINE$
+@$
 
-cinco, silla, casa;
-FINN!!!
+@cinco, silla, casa;$
+@FINN!!!$

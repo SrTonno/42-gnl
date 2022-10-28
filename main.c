@@ -6,7 +6,7 @@
 /*   By: tvillare <tvillare@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/15 14:43:56 by tvillare          #+#    #+#             */
-/*   Updated: 2022/10/24 16:36:26 by tvillare         ###   ########.fr       */
+/*   Updated: 2022/10/28 10:46:32 by tvillare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,14 +20,16 @@
 
 int main()
 {
-	int file, file2;
+	int file, file2, file3;
 	int i;
 	char	*a;
 
 	i = 0;
 	file = open("mifichero.txt", O_RDONLY);
 	file2 = open("minifichero.txt", O_RDONLY);
+	file3 = open("nl.txt", O_RDONLY);
 	//a = get_next_line(file2);
+	//printf("%s", a);
 /*
 	// prueba 1
 	while (5 > i)
@@ -52,12 +54,16 @@ int main()
 
 	printf("/-------------------.-.----------------/\n");
 */
-	while (7 > i)
+
+	while (15 > i)
 	{
 		a = get_next_line(file);
 		//printf("\n%d\n", i);
 		printf("%d -> -%s-\n", i, a);
+		free(a);
 		i++;
 	}
+
+	system("leaks -q a.out");
 	return 0;
 }
