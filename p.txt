@@ -1,8 +1,0 @@
-0 -> -uno, dos, tres, cuatro, NEWLINE 
--
-1 -> -
--
-2 -> -nco, silla, casa,
--
-3 -> -FINN!!!
-!-

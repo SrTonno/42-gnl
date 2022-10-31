@@ -6,7 +6,7 @@
 /*   By: tvillare <tvillare@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/19 12:21:59 by tvillare          #+#    #+#             */
-/*   Updated: 2022/10/28 15:06:22 by tvillare         ###   ########.fr       */
+/*   Updated: 2022/10/31 16:42:47 by tvillare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,6 @@ void	*ft_calloc(size_t count, size_t size)
 	return (ptn);
 }
 
-
 char	*ft_strjoin(char const *s1, char const *s2)
 {
 	int		x1;
@@ -66,34 +65,30 @@ char	*ft_strjoin(char const *s1, char const *s2)
 	return (pnt);
 }
 
-char	*ft_strdup(char *s1, int equal)
+char	*ft_strdup(char *s1)
 {
-	int		i;
+	int		count;
 	char	*s2;
 
-	i = 0;
-	equal = 0;
-
-	if (!s1[equal])
+	count = 0;
+	if (!s1[count])
 		return (NULL);
-
-	while (s1[equal] && s1[equal] != '\n')
-		equal++;
-
+	while (s1[count] && s1[count] != '\n')
+		count++;
+	if (s1[count] == '\n')
+		count++;
 	s2 = NULL;
-	if (s1[equal] == '\n')
-		equal++;
-	s2 = ft_calloc(sizeof(char), (equal + 2));
+	s2 = ft_calloc(sizeof(char), (count + 2));
 	if (NULL == s2)
 		return (NULL);
-	while (s1[i] && s1[i] != '\n')
+	count = 0;
+	while (s1[count] && s1[count] != '\n')
 	{
-		s2[i] = s1[i];
-		i++;
+		s2[count] = s1[count];
+		count++;
 	}
-	if (s1[i] && s1[i] == '\n')
-		s2[i++] = '\n';
-	s2[i] = '\0';
+	if (s1[count] && s1[count] == '\n')
+		s2[count++] = '\n';
+	s2[count] = '\0';
 	return (s2);
 }
-

@@ -6,7 +6,7 @@
 /*   By: tvillare <tvillare@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/18 10:37:21 by tvillare          #+#    #+#             */
-/*   Updated: 2022/10/28 13:23:58 by tvillare         ###   ########.fr       */
+/*   Updated: 2022/10/31 16:43:42 by tvillare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,60 +19,29 @@
 #include <stdio.h>
 */
 
-void	*update_buffer(char *text, int equal)
+void	*update_buffer(char *buffer)
 {
-/*
-	int		i;
+	int		c_aux;
+	int		count;
 	char	*aux;
 
-	i = 0;
-	equal = 0;
-	//equal = equal;
-	while (buffer[equal] && buffer[equal] != '\n')
-		equal++;
-	if (!buffer[equal])
+	count = 0;
+	c_aux = 0;
+	while (buffer[count] && buffer[count] != '\n')
+		count++;
+	if (!buffer[count])
 	{
 		free(buffer);
 		return (NULL);
 	}
-	if (buffer[equal] == '\n')
-		equal++;
-	aux = ft_calloc((ft_strlen(buffer) - equal) + 1, sizeof(char));
+	if (buffer[count] == '\n')
+		count++;
+	aux = ft_calloc((ft_strlen(buffer) - count) + 1, sizeof(char));
 	if (!aux)
 		return (NULL);
-	//equal++;
-	if (buffer[equal])
-	{
-		aux[i++] = buffer[equal++];
-		//i++;
-	}
-	aux[i] = '\0';
+	while (buffer[count])
+		aux[c_aux++] = buffer[count++];
 	free(buffer);
-	return (aux);
-	*/
-	char	*aux;
-	int		counter;
-	int		counter_aux;
-	(void)equal;
-
-	counter = 0;
-	while (text[counter] && text[counter] != '\n')
-		counter++;
-	if (!text[counter])
-	{
-		free(text);
-		return (NULL);
-	}
-	aux = NULL;
-	if (text[counter] == '\n')
-		counter++;
-	aux = ft_calloc((ft_strlen(text) - counter) + 1, sizeof(char));
-	if (!aux)
-		return (NULL);
-	counter_aux = 0;
-	while (text[counter])
-		aux[counter_aux++] = text[counter++];
-	free(text);
 	return (aux);
 }
 
@@ -81,7 +50,7 @@ char	*ft_union(char *input, char *tmp)
 	char	*aux;
 
 	aux = ft_strjoin(input, tmp);
-	if(!aux)
+	if (!aux)
 		return (NULL);
 	free(input);
 	return (aux);
@@ -89,7 +58,7 @@ char	*ft_union(char *input, char *tmp)
 
 int	hunt_nl(char *tmp)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (tmp[i] != '\0')
@@ -107,15 +76,11 @@ char	*ft_reader(char *input, int fd)
 	int		numbytes;
 
 	if (input == NULL)
-	{
 		input = ft_calloc(1, sizeof(char));
-		//if (input == NULL)
-			//return (NULL);
-	}
 	numbytes = 1;
 	tmp = ft_calloc((BUFFER_SIZE + 1), sizeof(char));
 	if (tmp == NULL)
-			return (NULL);
+		return (NULL);
 	while (0 < numbytes)
 	{
 		numbytes = read(fd, tmp, BUFFER_SIZE);
@@ -126,38 +91,21 @@ char	*ft_reader(char *input, int fd)
 		}
 		tmp[numbytes] = '\0';
 		input = ft_union(input, tmp);
-		//if (!input)
-			//return(NULL);
 		if (hunt_nl(tmp) > -1)
-			break;
+			break ;
 	}
 	free(tmp);
 	return (input);
 }
-/*
-char	*create_nl(char *input, int equal)
-{
-	char	*ptn;
-	//if (ft_strlen(input) == equal)
-		//return (input);
-	ptn = ft_strdup(input, equal);
-	if (!ptn)
-		return (NULL);
-	return (ptn);
 
-}
-*/
 char	*get_next_line(int fd)
 {
-	//static char	buffer[BUFFER_SIZE + 1];
 	static char	*buffer;
 	char		*tmp;
-	int 		equal;
 
-	//printf("inicio\n");
 	if (read(fd, 0, 0) < 0)
 	{
-		if(buffer != NULL)
+		if (buffer != NULL)
 		{
 			free(buffer);
 			buffer = NULL;
@@ -169,12 +117,7 @@ char	*get_next_line(int fd)
 	buffer = ft_reader(buffer, fd);
 	if (!buffer)
 		return (NULL);
-	///printf("(%s)", buffer);
-	equal = hunt_nl(buffer);
-	//printf("%d\n", equal);
-	tmp = ft_strdup(buffer, equal);
-	buffer = update_buffer(buffer, equal);
-	//printf("[%s]", buffer);
-	//printf("fin\n");
+	tmp = ft_strdup(buffer);
+	buffer = update_buffer(buffer);
 	return (tmp);
 }
