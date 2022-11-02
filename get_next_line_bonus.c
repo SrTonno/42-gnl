@@ -1,25 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.c                                    :+:      :+:    :+:   */
+/*   get_next_line_bonus.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tvillare <tvillare@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/18 10:37:21 by tvillare          #+#    #+#             */
-/*   Updated: 2022/11/02 10:54:52 by tvillare         ###   ########.fr       */
+/*   Updated: 2022/10/31 17:00:14 by tvillare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
-/*
-#include <fcntl.h>
-#include <stdlib.h>
-#include <stdio.h>
-#include <unistd.h>
-#include <stdio.h>
-*/
+#include "get_next_line_bonus.h"
 
-static void	*update_buffer(char *buffer)
+void	*update_buffer(char *buffer)
 {
 	int		c_aux;
 	int		count;
@@ -45,7 +38,7 @@ static void	*update_buffer(char *buffer)
 	return (aux);
 }
 
-static char	*ft_union(char *input, char *tmp)
+char	*ft_union(char *input, char *tmp)
 {
 	char	*aux;
 
@@ -70,7 +63,7 @@ int	hunt_nl(char *tmp)
 	return (-1);
 }
 
-static char	*ft_reader(char *buffer, int fd)
+char	*ft_reader(char *buffer, int fd)
 {
 	char	*tmp;
 	int		numbytes;
@@ -100,24 +93,24 @@ static char	*ft_reader(char *buffer, int fd)
 
 char	*get_next_line(int fd)
 {
-	static char	*buffer;
+	static char	*buffer[1024];
 	char		*tmp;
 
 	if (read(fd, 0, 0) < 0)
 	{
-		if (buffer != NULL)
+		if (buffer[fd] != NULL)
 		{
-			free(buffer);
-			buffer = NULL;
+			free(buffer[fd]);
+			buffer[fd] = NULL;
 		}
 		return (NULL);
 	}
 	if (fd < 0 || BUFFER_SIZE < 0)
 		return (NULL);
-	buffer = ft_reader(buffer, fd);
-	if (!buffer)
+	buffer[fd] = ft_reader(buffer[fd], fd);
+	if (!buffer[fd])
 		return (NULL);
-	tmp = ft_strdup(buffer);
-	buffer = update_buffer(buffer);
+	tmp = ft_strdup(buffer[fd]);
+	buffer[fd] = update_buffer(buffer[fd]);
 	return (tmp);
 }
